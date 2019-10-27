@@ -77,4 +77,18 @@ class PolicyFormat extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
+
+    public function getServices()
+    {
+        $ids = ServiceCompanyPolicyType::find()->where(['company_id'=>$this->company->id, 'type_id'=>$this->type->id])->all();
+        $idsArr = ArrayHelper::toArray($ids, [
+            'app\models\ServiceCompanyPolicyType' => [
+                'service_id',
+                'type_id',
+                'company_id',
+            ]]);
+        return array_map(function($item) {
+            return Service::findIdentity($item['service_id']);
+        }, $idsArr);
+    }
 }
