@@ -7,8 +7,8 @@ services:
       context: ./docker/nginx
       dockerfile: Dockerfile
     environment:
-      - VIRTUAL_HOST=service-api.pstuffapp.com
-      - LETSENCRYPT_HOST=service-api.pstuffapp.com
+      - VIRTUAL_HOST=apiservices.pstuffapp.com
+      - LETSENCRYPT_HOST=apiservices.pstuffapp.com
       - LETSENCRYPT_EMAIL=absorber000@gmail.com
     depends_on:
       - php
