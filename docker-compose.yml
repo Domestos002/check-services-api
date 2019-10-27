@@ -6,8 +6,10 @@ services:
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
-    ports:
-      - "85:80"
+    environment:
+      - VIRTUAL_HOST=service-api.pstuffapp.com
+      - LETSENCRYPT_HOST=service-api.pstuffapp.com
+      - LETSENCRYPT_EMAIL=absorber000@gmail.com
     depends_on:
       - php
     volumes:
@@ -24,7 +26,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./src:/var/www/html
-      # иначе сервер в контейнере не видит содержимое папки, хз почему
       - ./src/vendor:/var/www/html/vendor
     networks:
       - backend
@@ -36,24 +37,22 @@ services:
       - ./database:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=services
-      - MYSQL_ROOT_PASSWORD=8JJxJHl!69TEv#D
+      - MYSQL_ROOT_PASSWORD=
     networks:
       - backend
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    ports:
-      - "86:80"
     environment:
-      - LETSENCRYPT_HOST=phpmyadmin.pstuffapp.com
+      - VIRTUAL_HOST=pmaservices.pstuffapp.com
+      - LETSENCRYPT_HOST=pmaservices.pstuffapp.com
       - LETSENCRYPT_EMAIL=absorber000@gmail.com
       - PMA_HOST=mysql
     networks:
       - default
       - frontend
       - backend
-
 
 networks:
   default:
